@@ -61,10 +61,10 @@ class HelperDB(
         return lista
     }
 
-    fun onAdd(binding: ActivityAddBinding){
+    fun onAdd(task: Task){
         val db = writableDatabase
         val sql = "INSERT INTO $TABLE_NAME ($COLUMNS_DESC, $COLUMNS_DATA, $COLUMNS_HORA) " +
-                "VALUES ('${binding.tiDescricao.text}','${binding.tiData.text}','${binding.tiHora.text}')"
+                "VALUES ('${task.descricao}','${task.data}','${task.hora}')"
         db.execSQL(sql)
         db.close()
     }
