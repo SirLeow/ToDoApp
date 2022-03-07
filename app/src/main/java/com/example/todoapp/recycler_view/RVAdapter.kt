@@ -7,14 +7,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
+import com.example.todoapp.ItemSelected
 
-class RVAdapter : RecyclerView.Adapter<RVAdapter.ContactAdapterViewHolder>() {
+class RVAdapter(var listener:ItemSelected) : RecyclerView.Adapter<RVAdapter.ContactAdapterViewHolder>() {
 
     private val list: MutableList<Task> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactAdapterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item,parent, false)
-        return ContactAdapterViewHolder(view)
+        return ContactAdapterViewHolder(view,list,listener)
     }
 
     override fun onBindViewHolder(holder: ContactAdapterViewHolder, position: Int) {
@@ -29,22 +30,24 @@ class RVAdapter : RecyclerView.Adapter<RVAdapter.ContactAdapterViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ContactAdapterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class ContactAdapterViewHolder(itemView: View, var list: List<Task>, var listener: ItemSelected): RecyclerView.ViewHolder(itemView){
         private val tvTask: TextView = itemView.findViewById(R.id.tv_task)
         private val tvData: TextView = itemView.findViewById(R.id.tv_data)
         private val tvHora: TextView = itemView.findViewById(R.id.tv_hora)
+        private val erase: ImageButton = itemView.findViewById(R.id.ib_delete)
+
+
+        init {
+            erase.setOnClickListener{
+                listener.clickItem(list[adapterPosition])
+            }
+        }
 
         fun bind(task: Task){
             tvTask.text = task.descricao
             tvData.text = task.data
             tvHora.text = task.hora
+
         }
     }
-
-    //fun deleteTask(itemView: View){
-    //val imageButton: ImageButton = itemView.findViewById(R.id.ib_delete)
-    //    imageButton.setOnClickListener{
-
-      //  }
-    //}
 }
