@@ -35,11 +35,16 @@ class RVAdapter(var listener:ItemSelected) : RecyclerView.Adapter<RVAdapter.Cont
         private val tvData: TextView = itemView.findViewById(R.id.tv_data)
         private val tvHora: TextView = itemView.findViewById(R.id.tv_hora)
         private val erase: ImageButton = itemView.findViewById(R.id.ib_delete)
+        private val edit: ImageButton = itemView.findViewById(R.id.ib_edit)
 
 
         init {
             erase.setOnClickListener{
-                listener.clickItem(list[adapterPosition])
+                listener.clickItem(list[adapterPosition], "DELETE")
+            }
+
+            edit.setOnClickListener{
+                listener.clickItem(list[adapterPosition], "EDIT")
             }
         }
 

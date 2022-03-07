@@ -15,20 +15,20 @@ import com.example.todoapp.recycler_view.RVAdapter
 import com.example.todoapp.recycler_view.Task
 
 
-private lateinit var binding: ActivityMainBinding
+lateinit var mainBinding: ActivityMainBinding
 val data = DateManager()
 val time= TimeManager()
+var parcelableTask:Task? = null
 lateinit var db: HelperDB
-
 private lateinit var rvList: RecyclerView
 private lateinit var adapter: RVAdapter
 
 class MainActivity : AppCompatActivity(), ItemSelected {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        rvList = binding.rvList
-        val view = binding.root
+        mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        rvList = mainBinding.rvList
+        val view = mainBinding.root
         setContentView(view)
 
         db = HelperDB(this)
@@ -44,20 +44,26 @@ class MainActivity : AppCompatActivity(), ItemSelected {
         adapter.updateList(db.onSearch("*"))
     }
 
-    override fun clickItem(task: Task) {
+    override fun clickItem(task: Task, tag: String) {
         //super.clickItem(task)
-        db.onDelete(task.id)
+        when(tag){
+            "DELETE" -> db.onDelete(task.id)
+            "EDIT"   -> editTask(task)
+        }
         adapter.updateList(db.onSearch("*"))
     }
 
     private fun addTask(){
-        binding.btAddTask.setOnClickListener{
+        mainBinding.btAddTask.setOnClickListener{
             startActivity(Intent(this, CreateTaskActivity::class.java))
         }
+    }
 
-        binding.btSearch.setOnClickListener{
-
-        }
+    private fun editTask(task:Task){
+        parcelableTask = task
+        //db.onDelete(task.id)
+        val intent = Intent(this, CreateTaskActivity::class.java)
+        startActivity(intent)
     }
 
     fun showToast(msg:String){
