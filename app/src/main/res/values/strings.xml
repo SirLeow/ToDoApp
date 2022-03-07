@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ToDoApp</string>
     <string name="adicionar_tarefa">Adicionar tarefa</string>
+    <string name="descricao">Descrição</string>
+    <string name="data">Data</string>
+    <string name="hora">Hora</string>
+    <string name="salvar">Salvar</string>
 </resources>
