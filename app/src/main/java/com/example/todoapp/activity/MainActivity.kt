@@ -10,7 +10,9 @@ import com.example.contactapp.helpers.HelperDB
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.date.DateManager
 import com.example.todoapp.hour.TimeManager
+import com.example.todoapp.ItemSelected
 import com.example.todoapp.recycler_view.RVAdapter
+import com.example.todoapp.recycler_view.Task
 
 
 private lateinit var binding: ActivityMainBinding
@@ -18,18 +20,19 @@ val data = DateManager()
 val time= TimeManager()
 lateinit var db: HelperDB
 
-
 private lateinit var rvList: RecyclerView
-private val adapter = RVAdapter()
+private lateinit var adapter: RVAdapter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemSelected {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         rvList = binding.rvList
         val view = binding.root
         setContentView(view)
+
         db = HelperDB(this)
+        adapter = RVAdapter(this)
         bindViews()
         addTask()
         //adapter.deleteTask(view)
@@ -41,9 +44,19 @@ class MainActivity : AppCompatActivity() {
         adapter.updateList(db.onSearch("*"))
     }
 
+    override fun clickItem(task: Task) {
+        //super.clickItem(task)
+        db.onDelete(task.id)
+        adapter.updateList(db.onSearch("*"))
+    }
+
     private fun addTask(){
         binding.btAddTask.setOnClickListener{
             startActivity(Intent(this, CreateTaskActivity::class.java))
+        }
+
+        binding.btSearch.setOnClickListener{
+
         }
     }
 
