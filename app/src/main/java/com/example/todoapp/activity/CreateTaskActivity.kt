@@ -22,7 +22,6 @@ class CreateTaskActivity : AppCompatActivity() {
         time.pickTime(addBinding,supportFragmentManager)
         addTask()
         if(parcelableTask?.id != -1){
-            db.onDelete(parcelableTask?.id?:-1)
             addBinding.toolbar.title = "Editar Tarefa"
             addBinding.tiDescricao.setText(parcelableTask?.descricao ?: "")
             addBinding.tiData.setText(parcelableTask?.data ?: "")
@@ -45,9 +44,13 @@ class CreateTaskActivity : AppCompatActivity() {
         addBinding.btSaveTask.setOnClickListener{
                 if (addBinding.tiDescricao.text.isNullOrEmpty()) showToast("Descrição obrigatória")
                 else {
-                    db.onAdd(addBinding)
+                    if(parcelableTask?.id != -1){
+                        db.onDelete(parcelableTask?.id?:-1)
+                        db.onAdd(addBinding)
+                    }
                 startActivity(Intent(this, MainActivity::class.java))
                 }
         }
     }
+
 }
