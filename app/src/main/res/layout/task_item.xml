@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="10dp">
 
         <TextView
@@ -21,43 +21,53 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            tools:text="Descrição da tarefa"
+            app:layout_constraintEnd_toStartOf="@+id/ib_edit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Descrição da tarefa" />
 
         <TextView
             android:id="@+id/tv_data"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_task"
-            tools:text="01/01/2000"
-            app:layout_constraintStart_toStartOf="parent"
             app:drawableLeftCompat="@drawable/ic_calendar"
-            android:drawablePadding="5dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_task"
+            tools:text="01/01/2000" />
 
         <TextView
             android:id="@+id/tv_hora"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_task"
-            tools:text="12:00"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@+id/tv_data"
+            android:drawablePadding="5dp"
+            android:textSize="18sp"
             app:drawableLeftCompat="@drawable/ic_time"
-            android:drawablePadding="5dp" />
+            app:layout_constraintStart_toEndOf="@+id/tv_data"
+            app:layout_constraintTop_toBottomOf="@+id/tv_task"
+            tools:text="12:00" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_delete"
             android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_hora"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_delete" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/ib_delete"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
