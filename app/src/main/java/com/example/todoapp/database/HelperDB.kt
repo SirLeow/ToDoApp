@@ -1,5 +1,6 @@
 package com.example.contactapp.helpers
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -12,7 +13,7 @@ class HelperDB(
 
     companion object{
         private const val NOME_BANCO = "Contato.db"
-        private const val VERSAO_ATUAL = 1
+        private const val VERSAO_ATUAL = 2
     }
 
 
@@ -48,9 +49,11 @@ class HelperDB(
         val db = readableDatabase ?: return mutableListOf()
         val lista = mutableListOf<Task>()
         val sql = "SELECT $busca FROM $TABLE_NAME"
+        //val where = " WHERE id = 1"
         val cursor = db.rawQuery(sql, null)?: return mutableListOf()
         while (cursor.moveToNext()){
             val task = Task(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMNS_ID)),
                 descricao = cursor.getString(cursor.getColumnIndexOrThrow(COLUMNS_DESC)),
                 data = cursor.getString(cursor.getColumnIndexOrThrow(COLUMNS_DATA)),
                 hora = cursor.getString(cursor.getColumnIndexOrThrow(COLUMNS_HORA))
@@ -61,15 +64,25 @@ class HelperDB(
         return lista
     }
 
-    fun onAdd(task: Task){
+    fun onAdd(binding: ActivityAddBinding){
         val db = writableDatabase
-        val sql = "INSERT INTO $TABLE_NAME ($COLUMNS_DESC, $COLUMNS_DATA, $COLUMNS_HORA) " +
-                "VALUES ('${task.descricao}','${task.data}','${task.hora}')"
-        db.execSQL(sql)
+        val content = ContentValues()
+        content.put(COLUMNS_DESC,binding.tiDescricao.text.toString())
+        content.put(COLUMNS_DATA,binding.tiData.text.toString())
+        content.put(COLUMNS_HORA,binding.tiHora.text.toString())
+        //val sql = "INSERT INTO $TABLE_NAME ($COLUMNS_DESC, $COLUMNS_DATA, $COLUMNS_HORA) " +
+        //       "VALUES ('${task.descricao}','${task.data}','${task.hora}')"
+        //db.execSQL(sql)
+        db.insert(TABLE_NAME,null, content)
         db.close()
     }
 
-    fun onDelete(){
-
+    fun onDelete(id:Int){
+        val db = writableDatabase ?:return
+        val where = "id = ?"
+        val arg = arrayOf("$id")
+        db.delete(TABLE_NAME,where,arg)
+        //db.execSQL("DELETE FROM $TABLE_NAME WHERE $COLUMNS_ID = $id")
+        db.close()
     }
 }
