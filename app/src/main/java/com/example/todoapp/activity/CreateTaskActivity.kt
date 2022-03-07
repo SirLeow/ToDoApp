@@ -35,13 +35,7 @@ class CreateTaskActivity : AppCompatActivity() {
         binding.btSaveTask.setOnClickListener{
                 if (binding.tiDescricao.text.isNullOrEmpty()) showToast("Descrição obrigatória")
                 else {
-                    db.onAdd(
-                        Task(
-                            descricao = binding.tiDescricao.text.toString(),
-                            data = binding.tiData.text.toString(),
-                            hora = binding.tiHora.text.toString()
-                        )
-                    )
+                    db.onAdd(binding)
                 startActivity(Intent(this, MainActivity::class.java))
                 }
         }
